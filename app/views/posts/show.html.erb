@@ -1,1 +1,50 @@
+<h1> Post <%=@post.id%> </h1>
+
+<h3>Title: <%= @post.title%></h3>
+<h3>Content:</h3>
+    <%= @post.content %><br>
+<h3>Categories:</h3>
+    <% @post.categories.each do |category| %>
+        <%= category.name %>
+        <% end %>
+<br>
+<h3>Comments:</h3>
+<ul>
+<% @post.comments.each do |comment| %>
+    <li>
+      <%= comment.user.username %> says: <%= comment.content %>
+    </li>
+  <% end %>
+</ul>
+<br>
+
+<h3>Users:</h3>
+<ul>
+<% @post.users.uniq.each do |user| %>
+    <li><%= link_to user.username, user_path(user) %></li>
+    <% end %>
+    </ul>
+<br>
+
+
+<h3>Leave a New Comment</h3>
+
+<%=form_for @post.comments.build do |f| %>
+    <label>What you got to say?</label>
+    <%= f.text_field :content %>
+<br><br>
+
+<label>Who is leaving this comment?</label><br>
+<%= f.collection_select :user_id, User.all, :id, :username, :include_blank => true %>
+<br><br>
+<label>Create a new user for this comment</label><br>
+    <%= f.fields_for :user, User.new do |user_fields| %>
+        <%= user_fields.label :username %>
+        <%= user_fields.text_field :username %><br>
+        <% end %>
+<br><br>
+<%= f.hidden_field :post_id, value: @post.id %>
+<%= f.submit %>
+
+<% end %>
 

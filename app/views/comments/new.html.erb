@@ -1,0 +1,17 @@
+<%=form_for comment do |f| %>
+    <label>What you got to say?</label>
+    <%= f.text_field :content %>
+<br><br>
+
+<label>Who is leaving this comment?</label><br>
+<%= f.collection_select :user_id, User.all, :id, :username, :include_blank => true %>
+<br><br>
+<label>Create a new user for this comment</label><br>
+    <%= f.fields_for :user, comment.build_user do |inner| %>
+        <%= inner.text_field :username %><br>
+        <% end %>
+<br><br>
+<%= f.hidden_field :post_id, value: @post.id %>
+<%= f.submit %>
+
+<% end %>
