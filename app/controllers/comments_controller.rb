@@ -1,3 +1,4 @@
+require 'byebug'
 class CommentsController < ApplicationController
 
   def create
